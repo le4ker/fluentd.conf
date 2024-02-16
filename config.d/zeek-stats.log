@@ -1,0 +1,33 @@
+<source>
+  @type tail
+  path /opt/zeek/logs/current/stats.log
+  pos_file /var/log/td-agent/le4ker.me/zeek-stats/log.pos
+  read_from_head true
+  <parse>
+    @type none
+  </parse>
+  tag zeek-stats
+</source>
+
+<match zeek-stats>
+  @type s3
+  aws_key_id "#{ENV['AWS_KEY_ID']}"
+  aws_sec_key "#{ENV['AWS_SECRET']}"
+  s3_bucket "#{ENV['AWS_S3_BUCKET']}"
+  s3_region "#{ENV['AWS_REGION']}"
+
+  store_as json
+  path ${tag}/%Y/%m/%d/
+  s3_object_key_format %{path}%{time_slice}_%{index}.%{file_extension}
+
+  <format>
+    @type single_value
+  </format>
+
+  <buffer tag,time>
+    @type file
+    path /var/log/fluent/le4ker.me/s3/zeek-stats
+    flush_mode interval
+    flush_interval 60s
+  </buffer>
+</match>
