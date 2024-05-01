@@ -7,4 +7,4 @@
 - Netstat
 - `/var/log/auth.log`
 
-Details about the integration can be found [here](https://le4ker.me/tech/2023/04/17/panther.html).
+Details about the integration can be found [here](https://memoryleaks.blog/tech/2023/04/17/panther.html).
